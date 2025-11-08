@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="script.js" defer></script>
+    <!-- <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script> -->
 
     <style>
         * {
@@ -177,11 +177,7 @@
         resetBtn.addEventListener("click", () => {
             clearInterval(intervalId);
             intervalId = null;
-
-            daysEl.textContent = "00";
-            hoursEl.textContent = "00";
-            minutesEl.textContent = "00";
-            secondsEl.textContent = "00";
+            updateCountdown();
         });
 
 

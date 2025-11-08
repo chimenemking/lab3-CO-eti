@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f8f8f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #111;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .title {
+            font-size: 28px;
+            margin-bottom: 40px;
+            font-weight: 500;
+        }
+
+        .timer {
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+        }
+
+        .time-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .number {
+            font-size: 60px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .label {
+            margin-top: 8px;
+            font-size: 14px;
+            color: #444;
+        }
+
+        .controls{
+            margin-top: 40px;
+        }
+
+        .btn {
+            background-color: #ddd;
+            border: none;
+            color: black;
+            padding: 16px 32px;
+            text-align: center;
+            font-size: 16px;
+            margin: 4px 2px;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #3e8e41;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1 class="title">The event begins in</h1>
+
+        <div class="timer">
+            <div class="time-box">
+                <div id="days" class="number">00</div>
+                <div class="label">Days</div>
+            </div>
+
+            <div class="time-box">
+                <div id="hours" class="number">00</div>
+                <div class="label">Hours</div>
+            </div>
+
+            <div class="time-box">
+                <div id="minutes" class="number">00</div>
+                <div class="label">Minutes</div>
+            </div>
+
+            <div class="time-box">
+                <div id="seconds" class="number">00</div>
+                <div class="label">Seconds</div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="btn" id="startBtn">Start</button>
+            <button class="btn" id="stopBtn">Stop</button>
+            <button class="btn" id="resetBtn">Reset</button>
+        </div>
+    </div>
+
+    <script>
+        const hoursEl = document.getElementById("hours");
+        const minutesEl = document.getElementById("minutes");
+        const secondsEl = document.getElementById("seconds");
+        const daysEl = document.getElementById("days");
+
+
+
+        const startBtn = document.getElementById("startBtn")
+        const stopBtn = document.getElementById("stopBtn")
+        const resetBtn = document.getElementById("resetBtn")
+
+        //target countdown time 
+
+        const targetDate = new Date("2025-12-01T00:00:00");
+        function updateCountdown() {
+            const now = new Date();
+            const diff = targetDate - now;
+
+            if (diff <= 0) {
+                daysEl.textContent = "00"
+                hoursEl.textContent = "00"
+                minutesEl.textContent = "00";
+                secondsEl.textContent = "00";
+                clearInterval(intervalId);
+                intervalId = null;
+                return;
+            }
+
+
+            // find days (for every 60 seconds, 60 minutes, 24hours)
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24))
+            const hours = Math.floor(diff / (1000 * 60 * 60) % 24);
+            const minutes = Math.floor(diff / (1000 * 60) % 60);
+            const seconds = Math.floor((diff / 1000) % 60);
+
+            daysEl.textContent = String(days).padStart(2, "0")
+            hoursEl.textContent = String(hours).padStart(2, "0");
+            minutesEl.textContent = String(minutes).padStart(2, "0");
+            secondsEl.textContent = String(seconds).padStart(2, "0");
+
+        }
+        // this function accepts two parameters a function and time interval in milliseconds which calls the function repeatedly after every given time interval
+
+        // setInterval(updateCountdown, 1000);
+
+        let intervalId = null;
+
+        startBtn.addEventListener("click", () => {
+            if (intervalId !== null) return; // avoid multiple intervals
+            updateCountdown()
+            intervalId = setInterval(updateCountdown, 1000);
+        });
+
+        stopBtn.addEventListener("click", () => {
+            clearInterval(intervalId);
+            intervalId = null;
+        });
+
+        resetBtn.addEventListener("click", () => {
+            clearInterval(intervalId);
+            intervalId = null;
+
+            daysEl.textContent = "00";
+            hoursEl.textContent = "00";
+            minutesEl.textContent = "00";
+            secondsEl.textContent = "00";
+        });
+
+
+    </script>
+</body>
+
+</html>
